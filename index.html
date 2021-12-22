@@ -1,0 +1,75 @@
+<html>
+   <head></head>
+   <body>
+    <script type="text/javascript" src="Scripts/jquery.js"></script>
+	<script type="text/javascript" src="Scripts/moment.js"></script>
+	
+  <label for="fname">పేరు : </label>
+  <input type="text" id="name" name="name"><br><br>
+  <label >అసలు : </label>
+ <input type="text" id="principal" name="principal"><br><br>
+  <label >వడ్డీ  rate</label>
+ <input type="text" id="interest" name="interest"><br><br>
+  <label >తేదీ నుంచి:</label>
+  <input type="date" id="fromdate" name="fromdate"><br><br>
+  <label >తేదీ వరకు:</label>
+  <input type="date" id="uptodate" name="uptodate"><br><br>
+  <label >చక్ర  వడ్డీ  సంవత్సరాల</label>
+ <input type="text" id="cperiod" name="cperiod"><br><br>
+  <button onclick="calculate()">లెక్కించు</button>
+  <br><br>
+   <label >వడ్డీ : </label>
+ <input type="text"  id="totalinterest" name="totalinterest" readonly>
+  <br><br>
+   <label >మొత్తం : </label>
+ <input type="text"  id="total" name="total" readonly>
+   </body>
+   
+   <script>
+function calculate() {
+	var name=$("#name").val();
+	var principal=parseFloat($("#principal").val());
+	var interest=parseFloat($("#interest").val());
+	var fromdate=$("#fromdate").val();
+	var uptodate=$("#uptodate").val();
+	var cperiod=parseFloat($("#cperiod").val());
+	
+
+	var a = moment(uptodate);
+	var b = moment(fromdate);
+
+	var years = a.diff(b, 'year');
+	b.add(years, 'years');
+
+	var months = a.diff(b, 'months');
+	b.add(months, 'months');
+
+	var days = a.diff(b, 'days');
+
+	console.log(years + ' years ' + months + ' months ' + days + ' days');
+	var noofterms=years/cperiod;
+	var baseprincipal=principal;
+	var calyears=0;
+	for(var i=1;i<=noofterms;i++){
+		var interst=(baseprincipal*interest*(cperiod*12))/100;
+		baseprincipal=baseprincipal+interst;
+		calyears=calyears+cperiod;
+	}
+	var pendingyears=years-calyears;
+	
+	var remaingmonths=(pendingyears*12)+months;
+	var monthinterest=(baseprincipal*interest*1)/100;
+	var dayinterest=monthinterest/30;
+	var remainingmonthsinterst=monthinterest*remaingmonths;
+	var remainingdaysinterset=dayinterest*days;
+	var totalinterest=remainingmonthsinterst+remainingdaysinterset;
+	
+	var total=baseprincipal+remainingmonthsinterst+remainingdaysinterset;
+	
+	
+	$("#totalinterest").val(totalinterest); 
+  $("#total").val(total); 
+};
+
+</script>
+</html>
